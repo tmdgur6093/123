@@ -1,0 +1,475 @@
+<!DOCTYPE html> 
+
+<html lang="ko"> 
+
+<head> 
+
+  <meta charset="UTF-8" /> 
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/> 
+
+  <title>보이스피싱 인터랙티브 기사</title> 
+
+  <link rel="stylesheet" href="style.css"> 
+
+  <style> 
+
+    body, html { 
+
+      margin: 0; 
+
+      padding: 0; 
+
+      font-family: 'Noto Sans KR', sans-serif; 
+
+      background: #000; 
+
+      color: #f0f0f0; 
+
+    } 
+
+ 
+
+    .intro { 
+
+      height: 100vh; 
+
+      background: url('assets/img/dark-blur.jpg') no-repeat center center/cover; 
+
+      display: flex; 
+
+      align-items: center; 
+
+      justify-content: center; 
+
+      position: relative; 
+
+    } 
+
+ 
+
+    .intro-content { 
+
+      text-align: center; 
+
+      background: rgba(0, 0, 0, 0.7); 
+
+      padding: 40px; 
+
+      border-radius: 10px; 
+
+      max-width: 700px; 
+
+    } 
+
+ 
+
+    .intro-content h1 { 
+
+      font-size: 2.5rem; 
+
+      color: #ff5555; 
+
+      margin-bottom: 1rem; 
+
+    } 
+
+ 
+
+    .intro-content p { 
+
+      font-size: 1.2rem; 
+
+      margin-bottom: 0.5rem; 
+
+    } 
+
+ 
+
+    .scroll-indicator { 
+
+      margin-top: 1.5rem; 
+
+      font-size: 1rem; 
+
+      animation: blink 1.5s infinite; 
+
+      opacity: 0.7; 
+
+    } 
+
+ 
+
+    @keyframes blink { 
+
+      0%, 100% { opacity: 0.2; } 
+
+      50% { opacity: 1; } 
+
+    } 
+
+ 
+
+    .phishing-types { 
+
+      padding: 80px 20px; 
+
+      background: #000; 
+
+      text-align: center; 
+
+    } 
+
+ 
+
+    .phishing-types h2 { 
+
+      font-size: 2rem; 
+
+      margin-bottom: 40px; 
+
+      color: #ff4444; 
+
+    } 
+
+ 
+
+    /* ✅ 간격 줄이고 중앙 정렬 유지 */ 
+
+   .card-container { 
+
+  display: grid; 
+
+  grid-template-columns: repeat(2, max-content); /* 카드 크기만큼만 너비 설정 */ 
+
+  column-gap: 10px;  /* 가로 간격 명확히 지정 */ 
+
+  row-gap: 10px;     /* 세로 간격 */ 
+
+  justify-content: center; 
+
+} 
+
+ 
+
+ 
+
+    /* ✅ 정사각형 버튼 + 모서리 둥글게 + 텍스트 가운데 정렬 */ 
+
+    .phishing-card { 
+
+      background: #1a1a1a; 
+
+      border-radius: 20px; 
+
+      box-shadow: 0 4px 10px rgba(0,0,0,0.6); 
+
+      padding: 20px; 
+
+      width: 100%; 
+
+      max-width: 200px; 
+
+      aspect-ratio: 1 / 1; 
+
+      color: #ddd; 
+
+      transition: transform 0.3s ease, box-shadow 0.3s ease; 
+
+      cursor: pointer; 
+
+ 
+
+      display: flex; 
+
+      align-items: center; 
+
+      justify-content: center; 
+
+      text-align: center; 
+
+    } 
+
+ 
+
+    .phishing-card:hover { 
+
+      transform: translateY(-8px); 
+
+      box-shadow: 0 8px 20px rgba(255, 85, 85, 0.2); 
+
+    } 
+
+ 
+
+    .phishing-card h3 { 
+
+      color: #ff7777; 
+
+      margin: 0; 
+
+      font-size: 1.3rem; 
+
+    } 
+
+ 
+
+    .modal { 
+
+      display: none; 
+
+      position: fixed; 
+
+      z-index: 1000; 
+
+      left: 0; top: 0; 
+
+      width: 100%; height: 100%; 
+
+      background-color: rgba(0,0,0,0.7); 
+
+      justify-content: center; 
+
+      align-items: center; 
+
+    } 
+
+ 
+
+   .modal-content { 
+
+  background-color: #1c1c1c; 
+
+  color: #f0f0f0; 
+
+  padding: 30px; 
+
+  border-radius: 20px; 
+
+  width: 90%; 
+
+  max-width: 500px; 
+
+  aspect-ratio: 1 / 1;  /* ✅ 정사각형 */ 
+
+  text-align: center; 
+
+  position: relative; 
+
+ 
+
+  display: flex; 
+
+  flex-direction: column; 
+
+  justify-content: center; 
+
+  align-items: center; 
+
+} 
+
+ 
+
+ 
+
+    .modal-image { 
+
+  max-height: 150px; 
+
+  object-fit: cover; 
+
+  border-radius: 8px; 
+
+  margin-bottom: 20px; 
+
+} 
+
+ 
+
+ 
+
+    .close { 
+
+      position: absolute; 
+
+      top: 10px; right: 20px; 
+
+      font-size: 28px; 
+
+      color: #ff6666; 
+
+      cursor: pointer; 
+
+    } 
+
+ 
+
+    .modal-footer { 
+
+      margin-top: 20px; 
+
+      display: flex; 
+
+      justify-content: space-between; 
+
+      align-items: center; 
+
+    } 
+
+ 
+
+    .modal-footer button { 
+
+      background: #ff4444; 
+
+      color: white; 
+
+      border: none; 
+
+      padding: 10px 16px; 
+
+      border-radius: 6px; 
+
+      cursor: pointer; 
+
+    } 
+
+  </style> 
+</head>
+<body>
+
+  <!-- 인트로 -->
+  <section class="intro">
+    <audio autoplay muted loop id="bg-audio">
+      <source src="assets/audio/fraud-call.mp3" type="audio/mpeg">
+    </audio>
+    <div class="intro-content">
+      <h1>“고객님의 계좌에서 이상 거래가 감지되었습니다.”</h1>
+      <p>이 한 통의 전화, 당신도 받을 수 있습니다.</p>
+      <p class="sub">보이스피싱, 진화하는 수법. 당신은 얼마나 알고 있나요?</p>
+      <div class="scroll-indicator">▼ 스크롤하여 시작하기</div>
+    </div>
+  </section>
+
+  <!-- 스크롤 컷 (cut1~cut7 + video1, video1.5) -->
+  <section class="scrollcuts">
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut1.png"></div>
+    <section class="scroll-section">
+  <video src="assets/scrollcuts/cut1.png" autoplay muted loop></video>
+  <div class="overlay-text">“여기에 텍스트를 입력하세요”</div>
+</section>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut2.png"></div>
+        <section class="scroll-section">
+  <video src="assets/scrollcuts/cut2.png" autoplay muted loop></video>
+  <div class="overlay-text">“여기에 텍스트를 입력하세요”</div>
+</section>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut3.png"></div>
+        <section class="scroll-section">
+  <video src="assets/scrollcuts/cut3.png" autoplay muted loop></video>
+  <div class="overlay-text">“여기에 텍스트를 입력하세요”</div>
+</section>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut4.png"></div>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut5.png"></div>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut6.png"></div>
+    <div class="scrollcut" data-type="video" data-src="assets/scrollcuts/video1.mp4"></div>
+    <div class="scrollcut" data-type="image" data-src="assets/scrollcuts/cut7.png"></div>
+    <div class="scrollcut" data-type="video" data-src="assets/scrollcuts/video1.5.mp4"></div>
+  </section>
+
+  <!-- 카드 소개 -->
+  <section class="phishing-types">
+    <h2>보이스피싱, 어디까지 알고 계신가요?</h2>
+    <div class="card-container">
+      <div class="phishing-card"><h3>피싱 (Phishing)</h3></div>
+      <div class="phishing-card"><h3>스미싱 (Smishing)</h3></div>
+      <div class="phishing-card"><h3>큐싱 (Qshing)</h3></div>
+      <div class="phishing-card"><h3>피싱 사이트</h3></div>
+    </div>
+  </section>
+
+  <!-- 카드 모달 -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <span id="closeBtn" class="close">&times;</span>
+      <h3 id="modalTitle">제목</h3>
+      <img id="modalImage" src="" alt="피싱 이미지" class="modal-image" />
+      <p id="modalText">상세 설명이 여기에 나옵니다.</p>
+      <div class="modal-footer">
+        <div>
+          <button id="prevBtn">이전</button>
+          <button id="nextBtn">다음</button>
+        </div>
+        <button onclick="alert('예방법 보기 페이지로 이동!')">예방법 보기</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 스크립트 로딩 -->
+  <script src="script.js"></script>
+  <script>
+    // 카드 모달 기능
+    document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.phishing-card');
+    const modal = document.getElementById('modal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalText = document.getElementById('modalText');
+    const modalImage = document.getElementById('modalImage');
+    const closeBtn = document.getElementById('closeBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+
+    const phishingData = [
+      {
+        title: '피싱 (Phishing)',
+        text: '피싱은 이메일, 전화 등을 이용해 금융기관을 사칭하고 개인정보를 탈취하는 방식입니다.',
+        img: 'assets/img/phishing.jpg'
+      },
+      {
+        title: '스미싱 (Smishing)',
+        text: '문자 메시지 속 악성 링크를 클릭하면 악성 앱이 설치되어 금융정보가 유출됩니다.',
+        img: 'assets/img/smishing.jpg'
+      },
+      {
+        title: '큐싱 (Qshing)',
+        text: 'QR코드를 악용해 피싱사이트로 유도하는 신종 방식입니다.',
+        img: 'assets/img/qshing.jpg'
+      },
+      {
+        title: '피싱 사이트',
+        text: '실제 금융기관과 유사한 웹사이트를 만들어 정보를 탈취합니다.',
+        img: 'assets/img/fake-site.jpg'
+      }
+    ];
+
+    let currentIndex = 0;
+    function showModal(index) {
+      const data = phishingData[index];
+      modalTitle.innerText = data.title;
+      modalText.innerText = data.text;
+      modalImage.src = data.img;
+      modal.style.display = 'flex';
+      currentIndex = index;
+    }
+
+    cards.forEach((card, index) => {
+      card.addEventListener('click', () => showModal(index));
+    });
+
+    closeBtn.addEventListener('click', () => modal.style.display = 'none');
+    window.addEventListener('click', e => {
+      if (e.target === modal) modal.style.display = 'none';
+    });
+
+    nextBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % phishingData.length;
+      showModal(currentIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + phishingData.length) % phishingData.length;
+      showModal(currentIndex);
+    });
+     });
+  </script>
+</body>
+</html>
